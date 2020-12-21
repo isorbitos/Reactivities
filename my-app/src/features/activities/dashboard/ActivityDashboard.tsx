@@ -1,14 +1,20 @@
 import { observer } from 'mobx-react-lite';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Grid } from 'semantic-ui-react';
-import ActivityDetails from '../details/ActivityDetails';
-import ActivityForm from '../form/ActivityForm';
+import LoadingComponent from '../../../app/layout/LoadingComponent';
+import ActivityStore  from '../../../app/stores/activityStore';
 import ActivityList from './ActivityList';
-import ActivityStore from '../../../app/stores/activityStore'
+
 
 const ActivityDashboard: React.FC = () => {
-    const activityStore = useContext(ActivityStore);
-    const {editMode, selectedActivity} = activityStore
+
+    //TODO that red warning form there
+    const activityStore = useContext(ActivityStore)
+    useEffect(() => {
+      activityStore.loadActivities();
+    }, [activityStore]);
+    if (activityStore.loadingInitial) return <LoadingComponent content='Loading activities...' />
+    
     return (
         <div>
             <Grid>
@@ -16,8 +22,7 @@ const ActivityDashboard: React.FC = () => {
                     <ActivityList/>
                 </Grid.Column>
                 <Grid.Column width={6}>
-                    {selectedActivity && !editMode &&<ActivityDetails/>}
-                    {editMode && <ActivityForm  key={(selectedActivity && selectedActivity.id) || (0)} activity={selectedActivity!}/>}
+                    <h1>Activity filters</h1>
                 </Grid.Column>
             </Grid>
         </div>
