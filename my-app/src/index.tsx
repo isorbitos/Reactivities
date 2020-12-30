@@ -8,15 +8,19 @@ import App from './app/layout/App';
 import reportWebVitals from './reportWebVitals';
 import 'semantic-ui-css/semantic.min.css';
 import ScrollToTop from './app/layout/ScrollToTop';
+import 'react-widgets/dist/css/react-widgets.css';
+import dateFnsLocalizer from 'react-widgets-date-fns';
+
+dateFnsLocalizer();
 
 export const history = createBrowserHistory();
 
 ReactDOM.render(
   <Router history={history}>
-  <React.StrictMode>
+  <React.Fragment>
   <ScrollToTop />
     <App/>
-  </React.StrictMode>
+  </React.Fragment>
   </Router>,
   document.getElementById('root')
 );
