@@ -1,12 +1,10 @@
-import React, { FormEvent, useContext, useEffect, useState } from 'react';
+import React, {  useContext, useEffect, useState } from 'react';
 import { Button, Form, Grid, Segment } from 'semantic-ui-react';
-import { ActivityFormValues, IActivityFormValue } from '../../../app/models/activity';
+import { ActivityFormValues } from '../../../app/models/activity';
 import { v4 as uuidv4 } from 'uuid';
-import ActivityStore from '../../../app/stores/activityStore'
 import { observer } from 'mobx-react-lite';
 import { RouteComponentProps } from 'react-router-dom';
 import { Field, Form as FinalForm } from 'react-final-form';
-import { values } from 'mobx';
 import TextInput from '../../../app/common/form/TextInput';
 import TextAreaInput from '../../../app/common/form/TextAreaInput';
 import SelectInput from '../../../app/common/form/SelectInput';
@@ -14,6 +12,7 @@ import { category } from '../../../app/common/options/categoryOptions';
 import DateInput from '../../../app/common/form/DateInput';
 import { combineDateAndTime } from '../../../app/common/util/util';
 import { combineValidators, composeValidators, hasLengthGreaterThan, isRequired } from 'revalidate';
+import { RootStoreContext } from '../../../app/stores/rootStore';
 
 const validate = combineValidators({
     title: isRequired({ message: 'The title is required' }),
@@ -31,8 +30,8 @@ interface DetailParams {
 
 const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({ match, history }) => {
 
-    const activityStore = useContext(ActivityStore)
-    const { createActivity, editActivity, submitting, activity: initialFormState, loadActivity, clearActivity } = activityStore;
+    const rootStore = useContext(RootStoreContext)
+    const { createActivity, editActivity, submitting,  loadActivity } =rootStore.activityStore;
 
     const [activity, setActivity] = useState(new ActivityFormValues());
     const [loading, setLoading] = useState(false);
