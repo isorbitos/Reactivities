@@ -5,6 +5,7 @@ import { Field, Form as FinalForm } from 'react-final-form';
 import { Link } from 'react-router-dom';
 import TextAreaInput from '../../../app/common/form/TextAreaInput';
 import { observer } from 'mobx-react-lite';
+import { formatDistance } from 'date-fns/esm';
 
 
 const ActivityDetailChat = () => {
@@ -12,11 +13,11 @@ const ActivityDetailChat = () => {
   const { createHubConnection, stopHubConnection, addComment, activity } = rootStore.activityStore;
 
   useEffect(() => {
-    createHubConnection();
+    createHubConnection(activity!.id);
     return () => {
       stopHubConnection();
     }
-  }, [createHubConnection, stopHubConnection]);
+  }, [createHubConnection, stopHubConnection, activity]);
 
   return (
     <Fragment>
@@ -38,7 +39,7 @@ const ActivityDetailChat = () => {
               <Comment.Content>
                 <Comment.Author as={Link} to={`/profile/${comment.username}`}>{comment.displayName}</Comment.Author>
                 <Comment.Metadata>
-                  <div>{comment.createdAt}</div>
+                  <div>{formatDistance(comment.createdAt, new Date())}</div>
                 </Comment.Metadata>
                 <Comment.Text>{comment.body}</Comment.Text>
               </Comment.Content>

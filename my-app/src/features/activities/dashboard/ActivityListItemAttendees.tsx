@@ -7,6 +7,10 @@ interface IPoprs {
     attendees: IAttendee[]
 }
 
+const styles = {
+    borderColor: 'purple',
+    borderWidth: 2
+}
 
 const ActivityListItemAttendees: React.FC<IPoprs> = ({ attendees }) => {
     return (
@@ -14,10 +18,17 @@ const ActivityListItemAttendees: React.FC<IPoprs> = ({ attendees }) => {
             {attendees.map((attendee) => (
                 <List.Item key={attendee.username}>
                     <Popup
-                    header={attendee.displayName}
-                    trigger={<Image size='mini' circular src={attendee.image || '/assets/user.png'}></Image>}
+                        header={attendee.displayName}
+                        trigger={
+                            <Image size='mini'
+                                circular
+                                src={attendee.image || '/assets/user.png'}
+                                bordered
+                                style = {attendee.following ? styles : null}
+                                />
+                            }
                     />
-                    
+
                 </List.Item>
             ))}
         </List>
